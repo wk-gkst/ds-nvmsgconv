@@ -8,5 +8,3 @@ ADD ./* ./
 
 RUN make
 #&& make install
-
-CMD ["python3"]

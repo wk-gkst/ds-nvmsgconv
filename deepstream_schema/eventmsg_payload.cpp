@@ -472,7 +472,7 @@ generate_object_object (void *privData, NvDsEventMsgMeta *meta)
       jobject = json_object_new ();
       json_object_set_object_member (objectObj, meta->objectId, jobject);
       break;
-    case NVDS_OBJECT_TYPE_PPE:
+    case NVDS_OBJECT_TYPE_CUSTOM:
       // person sub object
       jobject = json_object_new ();
 
@@ -637,9 +637,7 @@ object_enum_to_str (NvDsObjectType type, gchar* objectId)
     case NVDS_OBJECT_TYPE_CUSTOM:
       return "Custom";
     case NVDS_OBJECT_TYPE_UNKNOWN:
-      return objectId ? objectId : "Unknown";
-    case NVDS_OBJECT_TYPE_PPE:
-      return "PPE";      
+      return objectId ? objectId : "Unknown";   
     default:
       return "Unknown";
   }
@@ -818,7 +816,7 @@ gchar* generate_event_message_minimal (void *privData, NvDsEvent *events, guint 
           }
         }
           break;
-        case NVDS_OBJECT_TYPE_PPE: {
+        case NVDS_OBJECT_TYPE_CUSTOM: {
           NvDsPPEObject *dsObj = (NvDsPPEObject *) meta->extMsg;
           if (dsObj) {
             ss << "|#|" << to_str(dsObj->stream_id) << "|" << to_str(dsObj->frame_unique_id) << "|" << to_str(dsObj->frame) 
