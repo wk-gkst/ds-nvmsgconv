@@ -17,6 +17,7 @@
 #include <cstring>
 #include <vector>
 #include "deepstream_schema.h"
+#include "custom_schema.h"
 
 
 static JsonObject*
@@ -471,6 +472,35 @@ generate_object_object (void *privData, NvDsEventMsgMeta *meta)
       jobject = json_object_new ();
       json_object_set_object_member (objectObj, meta->objectId, jobject);
       break;
+    case NVDS_OBJECT_TYPE_PPE:
+      // person sub object
+      jobject = json_object_new ();
+
+      if (meta->extMsgSize) {
+        NvDsPPEObject *dsObj = (NvDsPPEObject *) meta->extMsg;
+        if (dsObj) {
+          json_object_set_string_member (jobject, "stream_id", dsObj->stream_id);
+          json_object_set_string_member (jobject, "frame_unique_id", dsObj->frame_unique_id);
+          json_object_set_string_member (jobject, "frame", dsObj->frame);
+          json_object_set_int_member (jobject, "hasVest", dsObj->hasVest);
+          json_object_set_int_member (jobject, "hasHelm", dsObj->hasHelm);
+          json_object_set_int_member (jobject, "full", dsObj->full);
+          json_object_set_string_member (jobject, "lcStatus", dsObj->lcStatus);
+          json_object_set_string_member (jobject, "direction", dsObj->direction);
+        }
+      } else {
+        // No person object in meta data. Attach empty person sub object.
+          json_object_set_string_member (jobject, "stream_id", "");
+          json_object_set_string_member (jobject, "frame_unique_id", "");
+          json_object_set_string_member (jobject, "frame", "");
+          json_object_set_int_member (jobject, "hasVest", 0);
+          json_object_set_int_member (jobject, "hasHelm", 0);
+          json_object_set_int_member (jobject, "full", 0);
+          json_object_set_string_member (jobject, "lcStatus", "");
+          json_object_set_string_member (jobject, "direction", "");
+      }
+      json_object_set_object_member (objectObj, "ppe", jobject);
+      break;    
     default:
       cout << "Object type not implemented" << endl;
   }
@@ -608,6 +638,8 @@ object_enum_to_str (NvDsObjectType type, gchar* objectId)
       return "Custom";
     case NVDS_OBJECT_TYPE_UNKNOWN:
       return objectId ? objectId : "Unknown";
+    case NVDS_OBJECT_TYPE_PPE:
+      return "PPE";      
     default:
       return "Unknown";
   }
@@ -786,6 +818,15 @@ gchar* generate_event_message_minimal (void *privData, NvDsEvent *events, guint 
           }
         }
           break;
+        case NVDS_OBJECT_TYPE_PPE: {
+          NvDsPPEObject *dsObj = (NvDsPPEObject *) meta->extMsg;
+          if (dsObj) {
+            ss << "|#|" << to_str(dsObj->stream_id) << "|" << to_str(dsObj->frame_unique_id) << "|" << to_str(dsObj->frame) 
+                << "|" << dsObj->hasVest << "|" << dsObj->hasHelm << "|" << dsObj->full 
+                << "|" << to_str(dsObj->lcStatus) << "|" << to_str(dsObj->direction);
+          }
+        }
+          break;          
         default:
           cout << "Object type (" << meta->objType << ") not implemented" << endl;
           break;

@@ -9,7 +9,7 @@
  *
  */
 
-#include "nvmsgconv.h"
+#include "custom-nvmsgconv.h"
 #include "deepstream_schema.h"
 #include <json-glib/json-glib.h>
 #include <uuid.h>

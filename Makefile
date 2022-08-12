@@ -20,18 +20,18 @@ LIB_INSTALL_DIR?=/opt/nvidia/deepstream/deepstream-$(NVDS_VERSION)/lib/
 
 CFLAGS:= -Wall -std=c++11 -shared -fPIC
 
-CFLAGS+= -I../../includes -I./deepstream_schema
+CFLAGS+= -I../../includes -I/opt/nvidia/deepstream/deepstream-$(NVDS_VERSION)/sources/includes  -I./deepstream_schema
 
 CFLAGS+= $(shell pkg-config --cflags $(PKGS))
 LIBS:= $(shell pkg-config --libs $(PKGS))
 
 LIBS+= -lyaml-cpp
 
-SRCFILES:= nvmsgconv.cpp  \
+SRCFILES:= custom-nvmsgconv.cpp  \
   deepstream_schema/eventmsg_payload.cpp \
   deepstream_schema/dsmeta_payload.cpp \
   deepstream_schema/deepstream_schema.cpp
-TARGET_LIB:= libnvds_msgconv.so
+TARGET_LIB:= libnvds_msgconv_custom.so
 
 all: $(TARGET_LIB)
 
