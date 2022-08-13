@@ -2,7 +2,6 @@
 #ifndef NVCUSTOMMSGCONV_H_
 #define NVCUSTOMMSGCONV_H_
 
-#include <string>
 #include <glib.h>
 
 using namespace std;
@@ -17,11 +16,11 @@ typedef struct NvDsPPEObject
     gchar *stream_id;
     gchar *frame_unique_id;
     gchar *frame;
-    guint hasVest;
-    guint hasHelm;
-    guint full;
     gchar *lcStatus;
     gchar *direction;
+    guint hasVest;
+    guint hasHelm;
+    guint full;    
 } NvDsPPEObject;
 
 #ifdef __cplusplus
