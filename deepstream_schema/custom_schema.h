@@ -18,6 +18,7 @@ typedef struct NvDsPPEObject
     gchar *frame;
     gchar *lcStatus;
     gchar *direction;
+    gchar *classId;
     guint hasVest;
     guint hasHelm;
     guint full;    
