@@ -487,6 +487,7 @@ generate_object_object (void *privData, NvDsEventMsgMeta *meta)
           json_object_set_int_member (jobject, "full", dsObj->full);
           json_object_set_string_member (jobject, "lcStatus", dsObj->lcStatus);
           json_object_set_string_member (jobject, "direction", dsObj->direction);
+          json_object_set_string_member (jobject, "classId", dsObj->classId);
         }
       } else {
         // No person object in meta data. Attach empty person sub object.
@@ -498,6 +499,7 @@ generate_object_object (void *privData, NvDsEventMsgMeta *meta)
           json_object_set_int_member (jobject, "full", 0);
           json_object_set_string_member (jobject, "lcStatus", "");
           json_object_set_string_member (jobject, "direction", "");
+          json_object_set_string_member (jobject, "classId", "");
       }
       json_object_set_object_member (objectObj, "ppe", jobject);
       break;    
@@ -821,7 +823,7 @@ gchar* generate_event_message_minimal (void *privData, NvDsEvent *events, guint 
           if (dsObj) {
             ss << "|#|" << to_str(dsObj->stream_id) << "|" << to_str(dsObj->frame_unique_id) << "|" << to_str(dsObj->frame) 
                 << "|" << dsObj->hasVest << "|" << dsObj->hasHelm << "|" << dsObj->full 
-                << "|" << to_str(dsObj->lcStatus) << "|" << to_str(dsObj->direction);
+                << "|" << to_str(dsObj->lcStatus) << "|" << to_str(dsObj->direction)<< "|" << to_str(dsObj->classId);
           }
         }
           break;          
